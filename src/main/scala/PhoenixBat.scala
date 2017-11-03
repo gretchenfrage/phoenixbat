@@ -164,12 +164,25 @@ class PhoenixBat {
 
           def test(): Unit = {
             try {
+              def escapify(str: String): String = str.replace("\"", "\\\"")
+
               engine.executeScript("clearresults()")
-              for ((test, result) <- tester(submission)) {
-                def foo(str: String): String = str.replace("\"", "\\\"")
-                val script = "addresult(\"" + foo(test) + "\", \"" + foo(result) + "\")"
-                engine.executeScript(script)
+
+              for (result <- tester(submission)) {
+                engine.executeScript("addresult(\"" + escapify(result.name) + "\", \"" + escapify(result.result) + "\")")
+
+                def addTestResult(input: String, output: String, status: String): Unit =
+                  engine.executeScript("addtestresult('" + input + "', '" + output + "', '" + status + "')")
+                result.tests.foreach {
+                  case Passed(in, out) => addTestResult(in, out, "correct")
+                  case IncorrectResult(in, out) => addTestResult(in, out, "incorrect")
+                  case TargetException(in, t) => addTestResult(in, t.toString, "exception")
+                  case FileNotFound => addTestResult("N/A", "N/A", "file not found")
+                  case MethodNotFound => addTestResult("N/A", "N/A", "method not found")
+                  case ClassLoadFail(t) => addTestResult("N/A", t.toString, "class load fail")
+                }
               }
+
             } catch {
               case e: Exception => e.printStackTrace()
             }

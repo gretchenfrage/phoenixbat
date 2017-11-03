@@ -16,9 +16,9 @@ class JarTester(jar: URI) extends Tester {
     name
   }
 
-  val tests: Map[String, Submission => String] = {
+  val tests: Seq[Submission => ProblemResult] = {
     // we will build a map of test names and tests
-    val tests = new ArrayBuffer[(String, Submission => String)]
+    val tests = new ArrayBuffer[Submission => ProblemResult]
 
     // first, let's find the names of all classes
     val classNames = new ArrayBuffer[String]
@@ -51,41 +51,39 @@ class JarTester(jar: URI) extends Tester {
           val problemInstance = runtimeClass.newInstance()
 
           // get the sequence of equality tests
-          val test: Submission => String =
+          def test(submission: Submission): ProblemResult = {
             // get all methods annotated to be equality tests
-            runtimeClass.getMethods.toSeq.filter(_.getAnnotation(classOf[EqualityTest]) != null)
-            // invoke the methods to get the arguments and expected result
-            .map(method => {
-              val bean = method.invoke(problemInstance).asInstanceOf[EqualityBean]
-              bean.args -> bean.expected
+            val testResults: Seq[TestResult] =
+              runtimeClass.getMethods.toSeq.filter(_.getAnnotation(classOf[EqualityTest]) != null)
+              // invoke the methods to get the arguments and expected result
+              .map(method => {
+              val bean: EqualityBean = method.invoke(problemInstance).asInstanceOf[EqualityBean]
+              bean.args.toSeq -> bean.expected
             })
-            // map these tuples into Submission => Boolean functions that return whether the tests pass
-            .map({ case (args, expected) => (submission: Submission) => {
-              submission(problemName) match {
-                case Some(submissionFunc) => submissionFunc(args.toSeq) == expected
-                case None => false
-              }}})
-            // reduce these functions into one function that checks if they all pass
-            .fold((_: Submission) => true)((func1, func2) => (sub: Submission) => func1(sub) && func2(sub))
-            // map the boolean into a string
-            .andThen({
-              case true => "<span class=\"passed\">Passed</span>"
-              case false => "<span class=\"failed\">Failed</span>"
-            })
+              .map({ case (args, expected) => {
+                submission.apply(problemName, args, expected)
+              }})
+            val problemResultMessage =
+              if (testResults.forall({
+                case Passed(_, _) => true
+                case _ => false
+              })) "Passed"
+              else "Failed"
+            ProblemResult(problemName, problemResultMessage, testResults)
+          }
 
           // add the the test sequence
-          tests += problemName -> test
+          tests += test
         case None =>
       }
     }
 
-    // convert the tests sequence into a map
-    tests.toMap
+    tests
   }
 
   println("tests = " + tests)
 
-  override def apply(submission: Submission): Map[String, String] =
-    tests map { case (name, func) => (name, func(submission)) }
+  override def apply(submission: Submission): Seq[ProblemResult] =
+    tests map (_ apply submission)
 
 }
