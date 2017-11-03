@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    body {
+        background-color: #ebebeb;
+        text-align: center;
+        font-family: Arial;
+        font-size: 12pt;
+    }
+    #back {
+        float: left;
+        font-size: 12pt;
+        background-color: #bdcbcf;
+    }
+    #title {
+        margin: 0 auto;
+        width: 100%;
+        font-size: 14pt;
+        align: center;
+        font-weight: bold;
+    }
+    #test {
+        float: right;
+        font-size: 12pt;
+        background-color: #bdcbcf;
+    }
+    .passed {
+        color: green;
+    }
+    .failed {
+        color: red;
+    }
+    #headerrow {
+        font-weight: bold;
+    }
+</style>
+<body>
+    <script>
+        function test() {
+            app.test();
+        }
+        function exit() {
+            app.exit();
+        }
+    </script>
+
+    <!--
+    <span id="title">Loading...</span>
+    <button id="test" onclick="test()">Test</button>
+    -->
+    <button id="back" onclick="exit()">Exit</button>
+    <button id="test" onclick="test()">Test</button>
+    <div id="title">Loading...</div>
+
+    <br/>
+    <table width="100%" border="1" id="scrungus">
+        <tr id="headerrow">
+            <td width="50%">Problem</td>
+            <td width="50%">Result</td>
+        </tr>
+    </table>
+
+    <script>
+        function onload() {
+            var title = document.getElementById('title');
+            while (title.firstChild) {
+                title.removeChild(title.firstChild);
+            }
+            title.appendChild(document.createTextNode(app.suiteName()));
+
+        }
+        function clearresults() {
+            var scrungus = document.getElementById("scrungus")
+            scrungus.innerHTML = "" +
+                "<tr id='headerrow'>" +
+                "   <td width='50%'>Problem</td>" +
+                "   <td width='50%'>Result</td>" +
+                "</tr>"
+        }
+        function addresult(test, result) {
+            var tr = document.createElement('tr');
+            var td1 = document.createElement('td');
+            td1.innerHTML = test;
+            tr.appendChild(td1);
+            var td2 = document.createElement('td');
+            td2.innerHTML = result;
+            tr.appendChild(td2);
+            var scrungus = document.getElementById("scrungus");
+            scrungus.appendChild(tr);
+        }
+    </script>
+</body>
+</html>

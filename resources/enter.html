@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<style>
+    body {
+        background-color: #ebebeb;
+        text-align: center;
+        font-family: Arial;
+        font-size: 12pt;
+    }
+    .part {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .textField {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        width: 500px;
+        font-size: 8pt;
+    }
+    .fileButton {
+        font-size: 12pt;
+        background-color: #bdcbcf;
+    }
+    #enterButton {
+        font-family: Arial;
+        font-size: 12pt;
+        background-color: #bdcbcf;
+        width: 160px;
+        margin: 8px;
+        text-decoration: none;
+        text-color: black;
+    }
+</style>
+<body>
+    <script>
+        function promptSuiteURL() {
+            var u = app.selectProblemSuite();
+            document.getElementById("suiteURL").value = u;
+        }
+        function promptWorkingDir() {
+            var u = app.selectWorkingDir();
+            document.getElementById("workingDir").value = u;
+        }
+        function enter() {
+            var a = document.getElementById("suiteURL").value;
+            var b = document.getElementById("workingDir").value;
+            app.enter(a, b);
+        }
+    </script>
+    <br/>
+    <span class="part">Problem Suite:</span>
+    <br/>
+    <input type="text" class="textField" id="suiteURL">
+    <span>    </span>
+    <button class="fileButton" onclick="promptSuiteURL()">Select File</button>
+    <br/><br/>
+    <span class="part">Working Directory:</span>
+    <br/>
+    <input type="text" class="textField" id="workingDir">
+    <span>    </span>
+    <button class="fileButton" onclick="promptWorkingDir()">Select File</button>
+    <br><br/>
+    <button id="enterButton" onclick="enter()">Enter</button>
+    <script>
+        function onload() {
+            document.getElementById("suiteURL").value = app.defaultProblemSuite();
+            document.getElementById("workingDir").value = app.defaultWorkingDir();
+        }
+    </script>
+</body>
+</html>
