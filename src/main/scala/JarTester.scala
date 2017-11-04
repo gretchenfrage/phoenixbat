@@ -63,13 +63,12 @@ class JarTester(jar: URI) extends Tester {
               .map({ case (args, expected) => {
                 submission.apply(problemName, args, expected)
               }})
-            val problemResultMessage =
-              if (testResults.forall({
+            val problemResult =
+              testResults.forall({
                 case Passed(_, _) => true
                 case _ => false
-              })) "Passed"
-              else "Failed"
-            ProblemResult(problemName, problemResultMessage, testResults)
+              })
+            ProblemResult(problemName, problemResult, testResults)
           }
 
           // add the the test sequence

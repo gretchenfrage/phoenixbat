@@ -19,6 +19,9 @@
         align: center;
         font-weight: bold;
     }
+    .bton {
+        background-color: #bdcbcf;
+    }
     #test {
         float: right;
         font-size: 12pt;
@@ -29,6 +32,19 @@
     }
     .failed {
         color: red;
+    }
+    .column {
+        width: 40%;
+        display: inline-block;
+        border: 1px solid black;
+    }
+    .lastColumn {
+        width: 15%;
+        display: inline-block;
+        border: 1px solid black;
+    }
+    .bolded {
+        font-weight: bold;
     }
     #headerrow {
         font-weight: bold;
@@ -44,20 +60,22 @@
         }
     </script>
 
-    <!--
-    <span id="title">Loading...</span>
-    <button id="test" onclick="test()">Test</button>
-    -->
     <button id="back" onclick="exit()">Exit</button>
     <button id="test" onclick="test()">Test</button>
     <div id="title">Loading...</div>
 
-    <br/>
-    <table width="100%" border="1" id="scrungus">
-        <tr id="headerrow">
-            <td width="50%">Problem</td>
-            <td width="50%">Result</td>
-        </tr>
+    <table width="100%" border='0' id="scrungus">
+        <!--
+        <tr><td>
+
+            <table width="100%" border='1' class="bolded"><tr>
+                <td width="50%">Problem</td>
+                <td width="50%">Result</td>
+            </tr></table>
+
+        </td></tr>
+        -->
+
     </table>
 
     <script>
@@ -71,68 +89,107 @@
         }
         function clearresults() {
             var scrungus = document.getElementById("scrungus")
+            scrungus.innerHTML = "";
+            /*
             scrungus.innerHTML = "" +
-                "<tr id='headerrow'>" +
-                "   <td width='50%'>Problem</td>" +
-                "   <td width='50%'>Result</td>" +
-                "</tr>"
+                "<tr><td>\n" +
+                "    <table width='100%' border='1' class='bolded'><tr>\n" +
+                "        <td width='50%'>Problem</td>\n" +
+                "        <td width='50%'>Result</td>\n" +
+                "    </tr></table>\n" +
+                "</td></tr>"
+                */
         }
         var lastDetailNode;
-        function addresult(test, result) {
-            var tr = document.createElement('tr');
-            var td1 = document.createElement('td');
-            td1.innerHTML = test;
-            tr.appendChild(td1);
-            var td2 = document.createElement('td');
-            td2.innerHTML = result;
-            tr.appendChild(td2);
-            var scrungus = document.getElementById("scrungus");
-            scrungus.appendChild(tr);
+        function addresult(test, result, color) {
+            var resultNode = document.createElement('tr');
+            var td = document.createElement('td');
+            var innerTable = document.createElement('table');
+            innerTable.width = '100%';
+            innerTable.border = '1';
+            var innerTR = document.createElement('tr');
+            innerTR.innerHTML = "" +
+                "<td width='50%'>" + test + "</td>\n" +
+                "<td width='50%' style='color: " + color + "'>" + result + "</td>\n";
 
-            lastDetailNode = document.createElement('tr');
-            lastDetailNode.innerHTML = "" +
-                "<td>Input</td>" +
-                "<td>Output & Status</td>";
+            var button = document.createElement('button');
+            button.classList.add('bton')
+            button.innerHTML = 'Expand'
 
-            scrungus.appendChild(lastDetailNode);
+            var buttonTD = document.createElement('td');
+            buttonTD.width = '50px';
+            buttonTD.appendChild(button);
+            innerTR.appendChild(buttonTD);
 
-            /*
-            lastDetailNode = document.createElement('table');
-            //lastDetailNode.width = '80%';
-            //lastDetailNode.style.float = 'center';
-            lastDetailNode.border = '1';
-            lastDetailNode.innerHTML = "" +
+            innerTable.appendChild(innerTR);
+            td.appendChild(innerTable);
+            resultNode.appendChild(td);
+
+            var scrungus = document.getElementById('scrungus');
+            scrungus.appendChild(resultNode);
+
+            var detailTable = document.createElement('table');
+            detailTable.width = '80%';
+            detailTable.margin = 'auto';
+            detailTable.align = 'center';
+            detailTable.display = 'inline-block';
+            detailTable.border = '1';
+            detailTable.innerHTML = "" +
                 "<tr>" +
-                "    <td width='100%'>Input</td>" +
-                "    <td width='100%'>Output</td>" +
-                "    <td width='100%'>Status</td>" +
+                "    <td width='50%' class='bolded'>Input</td>" +
+                "    <td width='50%' class='bolded'>Output</td>" +
+                "    <td width='50px' class='bolded'>Status</td>" +
                 "</tr>";
+            var detailColumn = document.createElement('td');
+            detailColumn.appendChild(detailTable);
+            var detailRow = document.createElement('tr');
+            detailRow.appendChild(detailColumn);
+            detailRow.style.display = 'none';
+            scrungus.appendChild(detailRow);
 
-            var holderRow = document.createElement('tr');
-            var holderCol = document.createElement('td');
-            holderCol.colspan = '5';
-            holderCol.appendChild(lastDetailNode);
-            holderRow.appendChild(holderCol)
-            scrungus.appendChild(holderRow);
-            */
+            button.onclick = function() {
+                if (button.innerText == "Expand") {
+                    detailRow.style.display = 'table-row';
+                    button.innerText = "Collapse";
+                } else {
+                    detailRow.style.display = 'none';
+                    button.innerText = "Expand";
+                }
+            };
+
+            lastDetailNode = detailTable;
         }
-        function insertAfter(newElem, targetElem) {
-            var parent = targetElem.parentNode;
-            if (parent.lastChild == targetElem) {
-                parent.appendChild(newElem);
+        // create function, it expects 2 values.
+        function insertAfter(newElement,targetElement) {
+            // target is what you want it to go after. Look for this elements parent.
+            var parent = targetElement.parentNode;
+
+            // if the parents lastchild is the targetElement...
+            if (parent.lastChild == targetElement) {
+                // add the newElement after the target element.
+                parent.appendChild(newElement);
             } else {
-                parent.insertBefore(newElem, targetElem.nextSibling);
+                // else the target has siblings, insert the new element between the target and it's next sibling.
+                parent.insertBefore(newElement, targetElement.nextSibling);
             }
         }
         function addtestresult(input, output, status) {
-            var node = document.createElement('tr');
-            node.innerHTML = "" +
+            var tr = document.createElement('tr');
+            tr.innerHTML = "" +
                 "<td>" + input + "</td>" +
-                "<td>" + output + " (" + status + ")</td>";
+                "<td>" + output + "</td>" +
+                "<td>" + status + "</td>";
+            if (status == 'correct') {
+                tr.style.color = 'green';
+            } else if (status == 'incorrect') {
+                tr.style.color = 'red';
+            } else if (status == 'exception') {
+                tr.style.color = 'orange';
+            } else {
+                tr.style.color = 'purple';
+            }
 
-            insertAfter(node, lastDetailNode)
-
-            //lastDetailNode.parent.insertBefore(node, lastDetailNode.nextElementSibling);
+            lastDetailNode.appendChild(tr);
         }
     </script>
 </body>

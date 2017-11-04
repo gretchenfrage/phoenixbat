@@ -7,7 +7,7 @@ trait Tester {
 
 }
 
-case class ProblemResult(name: String, result: String, tests: Seq[TestResult])
+case class ProblemResult(name: String, passed: Boolean, tests: Seq[TestResult])
 sealed trait TestResult
 case class Passed(input: String, output: String) extends TestResult
 case class IncorrectResult(input: String, output: String) extends TestResult
