@@ -1,6 +1,5 @@
 trait Tester {
 
-  //def apply(submission: Submission): Map[String, String]
   def apply(submission: Submission): Seq[ProblemResult]
 
   def name: String

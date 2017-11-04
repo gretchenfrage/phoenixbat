@@ -117,7 +117,7 @@ class PhoenixBat {
             val suiteURI = {
               val file = new File(suite)
               if (file.exists()) Some(file.toURI)
-              else try Some(new URI(suite))
+              else try Some(new URL(suite).toURI)
               catch {
                 case e: URISyntaxException => None
               }

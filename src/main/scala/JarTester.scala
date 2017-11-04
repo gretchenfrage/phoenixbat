@@ -6,6 +6,8 @@ import scala.collection.mutable.ArrayBuffer
 class JarTester(jar: URI) extends Tester {
 
 
+
+  /*
   override def name: String = {
     val url = jar.toString
     val slashIndex = url.lastIndexOf('/')
@@ -15,6 +17,9 @@ class JarTester(jar: URI) extends Tester {
     println("jartester name = " + name)
     name
   }
+  */
+
+  override def name: String = jar.toString
 
   val tests: Seq[Submission => ProblemResult] = {
     // we will build a map of test names and tests
