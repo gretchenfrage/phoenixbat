@@ -114,26 +114,10 @@ class PhoenixBat {
 
           def enter(suite: String, workspace: String): Unit = {
             println("entering " + (suite, workspace))
-            /*
-            val suiteURI = {
-              val file = new File(suite)
-              if (file.exists()) Some(file.toURI)
-              else try Some(new URL(suite).toURI)
-              catch {
-                case e: URISyntaxException => None
-              }
-            }
-            */
             val suiteJar = {
               val file = new File(suite)
               if (file.exists()) Some(file)
-              else try Some(Downloader.download(file.toURI.toURL, "suite"))
-              catch {
-                case e: Exception =>
-                  System.err.println("exception in downloading suite jar")
-                  e.printStackTrace()
-                  None
-              }
+              else None
             }
             val workspacePath = {
               val file = new File(workspace)
@@ -216,5 +200,6 @@ class PhoenixBat {
 }
 
 object PhoenixBat extends App {
+  SaveOutput.activate(AppDirs.dataDir("phoenixbat").resolve("logs"))
   new PhoenixBat
 }
