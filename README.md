@@ -8,7 +8,7 @@ The program is an executable jar file, which runs in a gui. That file, and all o
 
 If the student is using BlueJ, they can set the working directory to the BlueJ project's directory.
 
-![phoenixbat enter window](https://imgur.com/download/LcDvT02)
+![enter window](https://imgur.com/download/LcDvT02)
 
 This will enter the PhoenixBat testing window, in which the Test button can be pressed to test the code. Initially, all problems will fail, because they have not been written yet. 
 
@@ -18,4 +18,5 @@ Each problem represents a single method that is expected to behave in a certain 
 
 The way this is applied, is that the student writes and compiles a class for each problem, with a single static method, called 'apply'. This method can have any arguments and any return type. Once the student implements this method, they can re-run the tests to receive feedback.
 
-![phoenixbat main window](https://imgur.com/download/agqG2aG)
+![implementation](https://imgur.com/download/agqG2aG)
+![main window](https://imgur.com/download/0LbNP2f)
