@@ -56,3 +56,29 @@ To put all that into action, here is the code for the previously exhibited Upper
            return new EqualityBean("FOO BAR", "FOO BAR");
        }
     }
+
+Acceptance tests are another type of test, that is more robust. Instead of providing an exact expected output, it provides a Java 8 Predicate<Object> that allows the test suite to decide whether a test passes or fails. Keep in mind, this is necessary for arrays, since an array's .equals method simply checks for reference equality, whereas java.util.Arrays.equals checks for content equality, and java.util.Arrays.deepEquals checks for multidimensional content equality.
+
+Here is an example for a problem where the input is a double 'max' and the output is a return double n where 0 <= n < max. This uses acceptance tests to ensure that the double is within that range. Java 8 lambda expressions are used to define the Predicate<Double>, as I would recommend. Also, this code abstracts the similarities between tests into a common method. 
+
+    @Problem(name = "RangeRand")
+    public class RangeRandTest {
+        private AcceptanceBean within(double max) {
+            return new AcceptanceBean(obj -> {
+                if (obj instanceof Double) {
+                    double n = (Double) obj;
+                    return n >= 0 && n < max;
+                } else return false;
+            }, max);
+        }
+    
+        @AcceptanceTest
+        public AcceptanceBean within5() {
+            return within(5);
+        }
+    
+        @AcceptanceTest
+        public AcceptanceBean within100() {
+            return within(100);
+        }
+    }
