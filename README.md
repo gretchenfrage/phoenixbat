@@ -28,11 +28,11 @@ Test cases have five possible results, all of which will be displayed: the test 
 ### How to create problem suites
 There is a jar file containing the PhoenixBat API which is used to create test suites. Download this jar, and create a Java project in your favorite IDE. Configure your project to use the API jar as a library, and prepare to export your own code as a jar file. **The jar file that you create must not contain the PhoenixBat API, make sure to configure it accordingly**.
 
-For each problem, create a class representing that problem, and annotation that problem using @Problem. The @Problem annotation has a required parameter, name, which must be the name of the class that the students will implement. The problem suite class that represents the problem must not have the same name as the class the students create for the problem. The @Problem annotation also has an ordinal parameter, which is the index of that problem in the list of problems, as they are displayed in PhoenixBat.
+For each problem, create a class representing that problem, and annotate that class using @Problem. The @Problem annotation has a required parameter, name, which must be the name of the class that the students will implement. The problem suite class that represents the problem must not have the same name as the class the students create for the problem. The @Problem annotation also has an ordinal parameter, which is the index of that problem in the list of problems, as they are displayed in PhoenixBat.
 
 There are two types of tests that you can add to these problems, equality tests, and acceptance tests.
 
-Equality tests represent an array of method input, and an expected method output. If the student's method output, given those inputs, .equals the expected output, the test passes. To create a test within a problem, create a method (does not need to be static), with whatever name you want, that returns an EqualityBean. The EqualityBean is a simple data-container class, which you construct with, first, the expected output, and then, all the input parameters. Then, annotate that method with @EqualityTest. The @EqualityTest annotation accepts an optional parameter, which is the ordinal of the test within the problem.
+Equality tests contain an array of method input, and an expected method output. If the student's method output, given those inputs, `.equals` the expected output, the test passes. To create a test within a problem, create a method (does not need to be static), with whatever name you want, that returns an EqualityBean. The EqualityBean is a simple data-container class, which you construct with, first, the expected output, and then, all the input parameters. Then, annotate that method with @EqualityTest. The @EqualityTest annotation accepts an optional parameter, which is the ordinal of the test within the problem.
 
 If you wish for the test to be hidden from the student, also annotate it with @Hidden.
 
@@ -57,9 +57,9 @@ To put all that into action, here is the code for the previously exhibited Upper
        }
     }
 
-Acceptance tests are another type of test, that is more robust. Instead of providing an exact expected output, it provides a Java 8 Predicate<Object> that allows the test suite to decide whether a test passes or fails. Keep in mind, this is necessary for arrays, since an array's .equals method simply checks for reference equality, whereas java.util.Arrays.equals checks for content equality, and java.util.Arrays.deepEquals checks for multidimensional content equality.
+Acceptance tests are another type of test, which are more robust. Instead of providing an exact expected output, it provides a Java 8 `Predicate<Object>` that allows the test suite to decide whether a test passes or fails. Keep in mind, this is necessary for arrays, since an array's `.equals` method simply checks for reference equality, whereas `java.util.Arrays.equals` checks for content equality, and `java.util.Arrays.deepEquals` checks for multidimensional content equality.
 
-Here is an example for a problem where the input is a double 'max' and the output is a return double n where 0 <= n < max. This uses acceptance tests to ensure that the double is within that range. Java 8 lambda expressions are used to define the Predicate<Double>, as I would recommend. Also, this code abstracts the similarities between tests into a common method. 
+Here is an example for a problem where the input is a double 'max' and the output is a double n where 0 <= n < max. This uses acceptance tests to ensure that the double is within that range. Java 8 lambda expressions are used to define the Predicate as I would recommend. Also, this code abstracts the similarities between tests into a common method. 
 
     @Problem(name = "RangeRand")
     public class RangeRandTest {
@@ -82,3 +82,5 @@ Here is an example for a problem where the input is a double 'max' and the outpu
             return within(100);
         }
     }
+
+That's about it. Export your test suite into a jar file, and again, make sure your exported jar doesn't include the PhoenixBat API itself. You can use the Java decompiler to ensure that it doesn't.
