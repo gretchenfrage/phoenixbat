@@ -8,4 +8,4 @@ The program is an executable jar file, which runs in a gui. That file, and all o
 
 If the student is using BlueJ, they can set the working directory to the BlueJ project's directory.
 
-![phoenixbat enter window](https://imgur.com/download/ybnqw5f)
+![phoenixbat enter window](https://imgur.com/download/LcDvT02)
