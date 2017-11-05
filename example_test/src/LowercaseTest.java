@@ -1,4 +1,4 @@
-@Problem(name = "Lowercase")
+@Problem(name = "Lowercase", ordinal = 5)
 public class LowercaseTest {
     @EqualityTest
     public EqualityBean helloworld() {

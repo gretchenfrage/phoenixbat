@@ -1,4 +1,4 @@
-@Problem(name = "Square")
+@Problem(name = "Square", ordinal = 2)
 public class SquareTest {
     @EqualityTest
     public EqualityBean square2() {

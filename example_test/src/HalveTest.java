@@ -1,4 +1,4 @@
-@Problem(name = "Halve")
+@Problem(name = "Halve", ordinal = 6)
 public class HalveTest {
     @EqualityTest
     public EqualityBean halve10() {

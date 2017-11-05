@@ -174,8 +174,6 @@ class PhoenixBat {
 
                 if (result.passed) addProblemResult(result.name, "Success", "green")
                 else addProblemResult(result.name, "Fail", "red")
-                //engine.executeScript("addresult('', '', ")
-                //engine.executeScript("addresult(\"" + escapify(result.name) + "\", \"" + escapify(result.passed) + "\")")
 
                 def addTestResult(input: String, output: String, status: String): Unit =
                   engine.executeScript("addtestresult('" + input + "', '" + output + "', '" + status + "')")

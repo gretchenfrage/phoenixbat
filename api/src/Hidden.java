@@ -6,11 +6,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 /**
- * This is a test annotation for problems which have a single correct output. These methods are of the signature
- * () => EqualityBean.
+ * This is a marker for test cases that should be hidden from the student. The input and output will not be visible
+ * to the student, but the status will.
  */
-public @interface EqualityTest {
-
-    int ordinal() default 0;
-
+public @interface Hidden {
 }

@@ -4,7 +4,7 @@ import javax.tools.ToolProvider
 
 class CompiledDirSubmission(path: Path) extends Submission {
 
-  override def apply(test: String, args: Seq[Any], expected: Any): TestResult = {
+  override def apply(test: String, args: Seq[Any], acceptance: Any => Boolean): TestResult = {
     val argString = new StringBuilder
     argString.append("[")
     for ((arg, i) <- args.zipWithIndex) {
@@ -23,11 +23,7 @@ class CompiledDirSubmission(path: Path) extends Submission {
             try {
               val result = method.invoke(null, args.map(_.asInstanceOf[AnyRef]): _*)
 
-
-
-
-
-              if (result == expected) Passed(argString.toString(), result.toString)
+              if (acceptance(result)) Passed(argString.toString(), result.toString)
               else IncorrectResult(argString.toString(), result.toString)
             } catch {
               case targetException: Throwable => TargetException(argString.toString(), targetException)

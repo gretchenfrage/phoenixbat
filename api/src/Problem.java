@@ -13,6 +13,8 @@ public @interface Problem {
 
     String name();
 
+    int ordinal() default 0;
+
 }
 
 

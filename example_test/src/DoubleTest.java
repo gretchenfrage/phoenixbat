@@ -1,4 +1,4 @@
-@Problem(name = "Double")
+@Problem(name = "Double", ordinal = 7)
 public class DoubleTest {
     @EqualityTest
     public EqualityBean double10() {
