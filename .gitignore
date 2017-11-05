@@ -3,3 +3,7 @@ app/project
 app/target
 api/out
 api/.idea
+example_solution/out
+example_solution/.idea
+example_test/out
+example_test/.idea
