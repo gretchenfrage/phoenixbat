@@ -1,3 +1,5 @@
 app/.idea
 app/project
 app/target
+api/out
+api/.idea
