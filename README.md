@@ -20,3 +20,7 @@ The way this is applied, is that the student writes and compiles a class for eac
 
 ![implementation](https://imgur.com/download/agqG2aG)
 ![main window](https://imgur.com/download/0LbNP2f)
+
+These images show one problem being correctly implemented, and PhoenixBat confirming that the problem works. With the problem expanded, it is visible that there are two visible test cases and one opaque test case. The rest of the problems still fail, because they have not been implemented.
+
+Test cases have five possible results, all of which will be displayed: the test passed, the test gave the wrong output, the test threw an exception, the class file doesn't exist, or the class file was corrupted.
