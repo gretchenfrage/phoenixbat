@@ -114,6 +114,7 @@ class PhoenixBat {
 
           def enter(suite: String, workspace: String): Unit = {
             println("entering " + (suite, workspace))
+            /*
             val suiteURI = {
               val file = new File(suite)
               if (file.exists()) Some(file.toURI)
@@ -122,12 +123,24 @@ class PhoenixBat {
                 case e: URISyntaxException => None
               }
             }
+            */
+            val suiteJar = {
+              val file = new File(suite)
+              if (file.exists()) Some(file)
+              else try Some(Downloader.download(file.toURI.toURL, "suite"))
+              catch {
+                case e: Exception =>
+                  System.err.println("exception in downloading suite jar")
+                  e.printStackTrace()
+                  None
+              }
+            }
             val workspacePath = {
               val file = new File(workspace)
               if (file.exists()) Some(file.toPath)
               else None
             }
-            (suiteURI, workspacePath) match {
+            (suiteJar, workspacePath) match {
               case (Some(s), Some(w)) => enterApp(s, w)
               case _ => println("failed")
             }
@@ -141,7 +154,7 @@ class PhoenixBat {
     loadPage("enter.html")
   })
 
-  def enterApp(suite: URI, workspace: Path): Unit = Platform.runLater(() => {
+  def enterApp(suite: File, workspace: Path): Unit = Platform.runLater(() => {
     val tester = new JarTester(suite)
     println("tests = " + tester)
     val submission = new CompiledDirSubmission(workspace)

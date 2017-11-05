@@ -1,19 +1,12 @@
+import java.io.File
 import java.net.{URI, URL, URLClassLoader}
 import java.util.zip.ZipInputStream
 
 import scala.collection.mutable.ArrayBuffer
 
-class JarTester(jar: URI) extends Tester {
+class JarTester(jar: File) extends Tester {
 
-  override def name: String = {
-    val url = jar.toString
-    val slashIndex = url.lastIndexOf('/')
-    val dotIndex = url.lastIndexOf('.', slashIndex)
-    val name = if (dotIndex == -1) url.substring(slashIndex + 1)
-    else url.substring(slashIndex + 1, dotIndex)
-    println("jartester name = " + name)
-    name
-  }
+  override def name: String = jar.getName
 
   val tests: Seq[Submission => ProblemResult] = {
     // we will build a map of test names and tests
@@ -31,14 +24,10 @@ class JarTester(jar: URI) extends Tester {
       entry = zip.getNextEntry
     }
 
-    class Loader(uri: URI) extends URLClassLoader(Array[URL](uri.toURL)) {
-      override def findClass(name: String): Class[_] = super.findClass(name)
-    }
-
     // for each class in the jar
-    val loader = new Loader(jar)
+    val loader = new URLClassLoader(Array[URL](jar.toURI.toURL))
     for (className <- classNames) {
-      val runtimeClass = loader.findClass(className)
+      val runtimeClass = loader.loadClass(className)
 
       // match on its nullable problem annotation
       Option(runtimeClass.getAnnotation(classOf[Problem])) match {
