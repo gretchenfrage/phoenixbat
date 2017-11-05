@@ -38,8 +38,8 @@ If you wish for the test to be hidden from the student, also annotate it with @H
 
 To put all that into action, here is the code for the previously exhibited Uppercase test:
 
-   @Problem(name = "Uppercase", ordinal = 1)
-   public class UppercaseTest {
+    @Problem(name = "Uppercase", ordinal = 1)
+    public class UppercaseTest {
        @EqualityTest(ordinal = 2)
        public EqualityBean helloworld() {
            return new EqualityBean("HELLO WORLD", "hello world");
@@ -55,4 +55,4 @@ To put all that into action, here is the code for the previously exhibited Upper
        public EqualityBean foobar() {
            return new EqualityBean("FOO BAR", "FOO BAR");
        }
-   }
+    }
