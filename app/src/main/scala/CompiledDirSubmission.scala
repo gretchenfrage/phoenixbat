@@ -1,3 +1,4 @@
+import java.lang.reflect.InvocationTargetException
 import java.net.{URL, URLClassLoader}
 import java.nio.file.Path
 import javax.tools.ToolProvider
@@ -26,7 +27,7 @@ class CompiledDirSubmission(path: Path) extends Submission {
               if (acceptance(result)) Passed(argString.toString(), result.toString)
               else IncorrectResult(argString.toString(), result.toString)
             } catch {
-              case targetException: Throwable => TargetException(argString.toString(), targetException)
+              case ite: InvocationTargetException => TargetException(argString.toString, ite.getTargetException)
             }
           case None => MethodNotFound
         }
